@@ -11,13 +11,8 @@ process_input(Path) ->
 
 find_ints([], _Map, Ints) -> Ints;
 find_ints([H|T], Map, Ints) -> 
-    Window = [
-        {[H], is_key([H], Map)}, 
-        {sublist([H|T],1,3), is_key(sublist([H|T],1,3), Map)}, 
-        {sublist([H|T],1,4), is_key(sublist([H|T],1,4), Map)}, 
-        {sublist([H|T],1,5), is_key(sublist([H|T],1,5), Map)}
-    ],
-    Matches = [Key || {Key, IsKey} <- Window , IsKey],
+    Windows = [[H], sublist([H|T],1,3), sublist([H|T],1,4), sublist([H|T],1,5)],
+    Matches = [Key || Key <- Windows , is_key(Key, Map)],
     if
         length(Matches) > 0 -> find_ints(T, Map, [get(nth(1,Matches), Map)|Ints]);
         true -> find_ints(T, Map, Ints)
