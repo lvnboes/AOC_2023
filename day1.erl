@@ -9,13 +9,13 @@ process_input(Path) ->
     {ok, File} = file:read_file(Path),
     [binary_to_list(Line) || Line <- split(File, <<"\n">>, [global])].
 
-find_ints([], _Map, Ints) -> Ints;
-find_ints([H|T], Map, Ints) -> 
-    Windows = [[H], sublist([H|T],1,3), sublist([H|T],1,4), sublist([H|T],1,5)],
-    Matches = [Key || Key <- Windows , is_key(Key, Map)],
+find_ints([], _Map, AllNums) -> AllNums;
+find_ints([H|T], Map, AllNums) -> 
+    PossibleNums = [[H], sublist([H|T],1,3), sublist([H|T],1,4), sublist([H|T],1,5)],
+    Nums = [Num || Num <- PossibleNums , is_key(Num, Map)],
     if
-        length(Matches) > 0 -> find_ints(T, Map, [get(nth(1,Matches), Map)|Ints]);
-        true -> find_ints(T, Map, Ints)
+        length(Nums) > 0 -> find_ints(T, Map, [get(nth(1,Nums), Map)|AllNums]);
+        true -> find_ints(T, Map, AllNums)
     end.
 
 get_calibration(Line, Map) -> 
