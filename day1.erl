@@ -9,17 +9,17 @@ process_input(Path) ->
     {ok, File} = file:read_file(Path),
     [binary_to_list(Line) || Line <- split(File, <<"\n">>, [global])].
 
-find_ints([], _Map, AllNums) -> AllNums;
-find_ints([H|T], Map, AllNums) -> 
+find_nums([], _Map, AllNums) -> AllNums;
+find_nums([H|T], Map, AllNums) -> 
     PossibleNums = [[H], sublist([H|T],1,3), sublist([H|T],1,4), sublist([H|T],1,5)],
     Nums = [Num || Num <- PossibleNums , is_key(Num, Map)],
     if
-        length(Nums) > 0 -> find_ints(T, Map, [get(nth(1,Nums), Map)|AllNums]);
-        true -> find_ints(T, Map, AllNums)
+        length(Nums) > 0 -> find_nums(T, Map, [get(nth(1,Nums), Map)|AllNums]);
+        true -> find_nums(T, Map, AllNums)
     end.
 
 get_calibration(Line, Map) -> 
-    [H|T] = find_ints(Line, Map, []),
+    [H|T] = find_nums(Line, Map, []),
     list_to_integer([last([H|T]),H]).
 
 sum_calibration([], _PatternMap) -> 0;

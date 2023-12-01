@@ -1,7 +1,6 @@
 -module(util).
 -export([timed/1]).
 
-
 timed(F) ->
     Start = erlang:system_time(microsecond),
     Result = F(),
