@@ -2,6 +2,7 @@
 -import(binary, [split/3]).
 -import(maps, [get/2, is_key/2]).
 -import(lists, [last/1, sublist/3, nth/2]).
+-import(util, [timed/1]).
 -export([run/0]).
 
 process_input(Path) ->
@@ -39,4 +40,4 @@ run() ->
         "one" => $1, "two" => $2, "three" => $3, "four" => $4, "five" => $5, 
         "six" => $6, "seven" => $7, "eight" => $8, "nine" => $9
     },
-    {{part1, sum_calibration(Input, Map1)}, {part2, sum_calibration(Input, Map2)}}.
+    timed(fun() -> {{part1, sum_calibration(Input, Map1)}, {part2, sum_calibration(Input, Map2)}} end).
