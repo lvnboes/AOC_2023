@@ -31,6 +31,12 @@ sum_calibration([H|T], PatternMap) -> get_calibration(H, PatternMap) + sum_calib
 
 solve() -> 
     Input = process_input("./input/d1.aoc"),
-    Map1 = #{"0" => $0, "1" => $1, "2" => $2, "3" => $3, "4" => $4 , "5" => $5 , "6" => $6 , "7" => $7, "8" => $8, "9" => $9},
-    Map2 = Map1#{"one" => $1, "two" => $2, "three" => $3, "four" => $4, "five" => $5, "six" => $6, "seven" => $7, "eight" => $8, "nine" => $9},
+    Map1 = #{
+        "0" => $0, "1" => $1, "2" => $2, "3" => $3, "4" => $4 , "5" => $5 , 
+        "6" => $6 , "7" => $7, "8" => $8, "9" => $9
+    },
+    Map2 = Map1#{
+        "one" => $1, "two" => $2, "three" => $3, "four" => $4, "five" => $5, 
+        "six" => $6, "seven" => $7, "eight" => $8, "nine" => $9
+    },
     {{part1, sum_calibration(Input, Map1)}, {part2, sum_calibration(Input, Map2)}}.
