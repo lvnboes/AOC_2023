@@ -2,7 +2,7 @@
 -import(binary, [split/3]).
 -import(maps, [get/2, is_key/2]).
 -import(lists, [last/1, sublist/3, nth/2]).
--export([solve/0]).
+-export([run/0]).
 
 process_input(Path) ->
     {ok, File} = file:read_file(Path),
@@ -29,7 +29,7 @@ get_calibration(Line, Map) ->
 sum_calibration([], _PatternMap) -> 0;
 sum_calibration([H|T], PatternMap) -> get_calibration(H, PatternMap) + sum_calibration(T, PatternMap).
 
-solve() -> 
+run() -> 
     Input = process_input("./data/d1.aoc"),
     Map1 = #{
         "0" => $0, "1" => $1, "2" => $2, "3" => $3, "4" => $4 , "5" => $5 , 
