@@ -27,9 +27,7 @@ get_calibration(Line, Map) ->
     list_to_integer([last([H|T]),H]).
 
 sum_calibration([], _PatternMap) -> 0;
-sum_calibration([H|T], PatternMap) -> 
-    Cal = get_calibration(H, PatternMap),
-    Cal + sum_calibration(T, PatternMap).
+sum_calibration([H|T], PatternMap) -> get_calibration(H, PatternMap) + sum_calibration(T, PatternMap).
 
 solve() -> 
     Input = process_input("./input/d1.aoc"),
