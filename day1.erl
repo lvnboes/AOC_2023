@@ -33,6 +33,6 @@ solve() ->
     Map2 = Map1#{
         "one" => 1, "two" => 2, "three" => 3, "four" => 4, "five" => 5, "six" => 6, "seven" => 7, "eight" => 8, "nine" => 9
     },
-    {{part1, sum_calibration(Input, Map1)}, {part2, sum_calibration(Input, Map2)}}.
+    #{part1 => sum_calibration(Input, Map1), part2 => sum_calibration(Input, Map2)}.
 
 solve_timed() -> util:timed(fun solve/0).

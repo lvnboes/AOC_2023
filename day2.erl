@@ -90,9 +90,9 @@ solve() ->
     Input = process_input("./data/day2.aoc"),
     Allowed = #{<<"red">> => 12, <<"green">> => 13, <<"blue">> => 14},
     Colours = maps:keys(Allowed),
-    {
-        {part1,sum_results(Input, Allowed, Colours, fun find_allowed_games/4)},
-        {part2,sum_results(Input, Allowed, Colours, fun get_powers/4)}
+    #{
+        part1 => sum_results(Input, Allowed, Colours, fun find_allowed_games/4),
+        part2 => sum_results(Input, Allowed, Colours, fun get_powers/4)
     }.
 
 solve_timed() -> util:timed(fun solve/0).
