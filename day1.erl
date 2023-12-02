@@ -31,4 +31,4 @@ solve() ->
     },
     {{part1, sum_calibration(Input, Map1)}, {part2, sum_calibration(Input, Map2)}}.
 
-solve_timed() -> util:timed(solve/0).
+solve_timed() -> util:timed(fun solve/0).
