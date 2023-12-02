@@ -80,4 +80,4 @@ solve() ->
         {part2,sum_results(Input, Allowed, Colours, fun get_powers/4)}
     }.
 
-solve_timed() -> util:timed(fun() -> solve() end).
+solve_timed() -> util:timed(solve/0).
