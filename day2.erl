@@ -24,7 +24,7 @@ parse_game([Set|Sets], Parsed) -> parse_game(Sets, [parse_set(binary:split(Set, 
 
 check_set(_Set, _Allowed, []) -> true;
 check_set(Set, Allowed, [Colour|Colours]) -> 
-    ValidColour = (not maps:is_key(Colour, Set)) orelse (maps:get(Colour, Set) =< maps:get(Colour, Allowed)),
+    ValidColour = get_colour_val(Colour, Set) =< maps:get(Colour, Allowed),
     if
         ValidColour -> check_set(Set, Allowed, Colours);
         true -> false
@@ -48,13 +48,6 @@ find_allowed_games([{Id, Game}|Games], Allowed, Colours, Result) ->
 
 %Part 2
 
-get_colour_val(Colour, Set) ->
-    IsKey = maps:is_key(Colour, Set),
-    if
-        IsKey -> maps:get(Colour, Set);
-        true -> 0
-    end.
-
 max_val_in_game(_Colour, [], Results) -> lists:max(Results);
 max_val_in_game(Colour, [Set|Sets], Results) -> max_val_in_game(Colour, Sets, [get_colour_val(Colour, Set) | Results]).
 
@@ -68,6 +61,13 @@ get_powers([], _Colours, Result) -> Result;
 get_powers([{_Id, Game}|Games], Colours, Result) -> get_powers(Games, Colours, [set_power(min_set(Game, Colours, [])) | Result]).
 
 %Common
+
+get_colour_val(Colour, Set) ->
+    IsKey = maps:is_key(Colour, Set),
+    if
+        IsKey -> maps:get(Colour, Set);
+        true -> 0
+    end.
 
 sum_results(Games, Allowed, Colours, F) -> lists:sum(F(Games, Allowed, Colours, [])).
 
