@@ -17,7 +17,7 @@ compile_modules(Files) -> compile_modules(Files, []).
 compile_modules([], Compiled) -> {ok,lists:sort(Compiled)};
 compile_modules([FileName|FileNames], Compiled) -> 
     if
-        FileName == "cmp.erl" -> 
+        FileName == "util.erl" -> 
             compile_modules(FileNames, Compiled);
         true -> 
             compile:file(FileName),
