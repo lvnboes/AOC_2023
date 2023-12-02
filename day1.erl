@@ -1,26 +1,22 @@
 -module(day1).
--import(binary, [split/3]).
--import(maps, [get/2, is_key/2]).
--import(lists, [last/1, sublist/3, nth/2]).
--import(util, [timed/1]).
 -export([solve/0]).
 
 process_input(Path) ->
     {ok, File} = file:read_file(Path),
-    [binary_to_list(Line) || Line <- split(File, <<"\n">>, [global])].
+    [binary_to_list(Line) || Line <- binary:split(File, <<"\n">>, [global])].
 
 find_nums([], _Map, AllNums) -> AllNums;
 find_nums([H|T], Map, AllNums) -> 
-    PossibleNums = [[H], sublist([H|T],1,3), sublist([H|T],1,4), sublist([H|T],1,5)],
-    Nums = [Num || Num <- PossibleNums , is_key(Num, Map)],
+    PossibleNums = [[H], lists:sublist([H|T],1,3), lists:sublist([H|T],1,4), lists:sublist([H|T],1,5)],
+    Nums = [Num || Num <- PossibleNums , maps:is_key(Num, Map)],
     if
-        length(Nums) > 0 -> find_nums(T, Map, [get(nth(1,Nums), Map)|AllNums]);
+        length(Nums) > 0 -> find_nums(T, Map, [maps:get(lists:nth(1,Nums), Map)|AllNums]);
         true -> find_nums(T, Map, AllNums)
     end.
 
 get_calibration(Line, Map) -> 
     [H|T] = find_nums(Line, Map, []),
-    last([H|T])*10+H.
+    lists:last([H|T])*10+H.
 
 sum_calibration([], _PatternMap) -> 0;
 sum_calibration([H|T], PatternMap) -> get_calibration(H, PatternMap) + sum_calibration(T, PatternMap).
@@ -35,4 +31,4 @@ solve() ->
         "one" => 1, "two" => 2, "three" => 3, "four" => 4, "five" => 5, 
         "six" => 6, "seven" => 7, "eight" => 8, "nine" => 9
     },
-    timed(fun() -> {{part1, sum_calibration(Input, Map1)}, {part2, sum_calibration(Input, Map2)}} end).
+    util:timed(fun() -> {{part1, sum_calibration(Input, Map1)}, {part2, sum_calibration(Input, Map2)}} end).
