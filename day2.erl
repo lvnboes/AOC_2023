@@ -5,20 +5,31 @@
 
 process_input(Path) ->
     {ok, File} = file:read_file(Path),
-    Lines = [[Test || Test <- binary:split(Line, <<":">>)] || Line <- binary:split(File, <<"\n">>, [global])],
+    Lines = [
+        [Test || Test <- binary:split(Line, <<":">>)] 
+        || Line <- binary:split(File, <<"\n">>, [global])
+    ],
     Games = [
-        {binary_to_integer(lists:nth(2, binary:split(Id, <<" ">>))), parse_game(binary:split(Game, <<";">>, [global]), [])}
-        || [Id, Game] <- Lines
+        {
+            binary_to_integer(
+                lists:nth(2, binary:split(Id, <<" ">>))
+            ), 
+            parse_game(
+                binary:split(Game, <<";">>, [global]), []
+            )
+        } || [Id, Game] <- Lines
     ],
     Games.
 
 parse_cube([_, Amount, Colour]) -> {Colour, binary_to_integer(Amount)}.
 
 parse_set([], Parsed) -> maps:from_list(Parsed);
-parse_set([Cube|Cubes], Parsed) -> parse_set(Cubes, [parse_cube(binary:split(Cube, <<" ">>, [global])) | Parsed]).
+parse_set([Cube|Cubes], Parsed) -> 
+    parse_set(Cubes, [parse_cube(binary:split(Cube, <<" ">>, [global])) | Parsed]).
 
 parse_game([], Parsed) -> Parsed;
-parse_game([Set|Sets], Parsed) -> parse_game(Sets, [parse_set(binary:split(Set, <<",">>, [global]), []) | Parsed]).
+parse_game([Set|Sets], Parsed) -> 
+    parse_game(Sets, [parse_set(binary:split(Set, <<",">>, [global]), []) | Parsed]).
 
 %Part 1
 
@@ -49,16 +60,20 @@ find_allowed_games([{Id, Game}|Games], Allowed, Colours, Result) ->
 %Part 2
 
 max_val_in_game(_Colour, [], Results) -> lists:max(Results);
-max_val_in_game(Colour, [Set|Sets], Results) -> max_val_in_game(Colour, Sets, [get_colour_val(Colour, Set) | Results]).
+max_val_in_game(Colour, [Set|Sets], Results) -> 
+    max_val_in_game(Colour, Sets, [get_colour_val(Colour, Set) | Results]).
 
 min_set(_Game, [], Result) -> Result;
-min_set(Game, [Colour|Colours], Result) -> min_set(Game, Colours, [max_val_in_game(Colour, Game, []) | Result]).
+min_set(Game, [Colour|Colours], Result) -> 
+    min_set(Game, Colours, [max_val_in_game(Colour, Game, []) | Result]).
 
 set_power([R, G, B]) -> R*G*B.
 
-get_powers(Games, _Allowed, Colours, Result) -> get_powers(Games, Colours, Result).
+get_powers(Games, _Allowed, Colours, Result) -> 
+    get_powers(Games, Colours, Result).
 get_powers([], _Colours, Result) -> Result;
-get_powers([{_Id, Game}|Games], Colours, Result) -> get_powers(Games, Colours, [set_power(min_set(Game, Colours, [])) | Result]).
+get_powers([{_Id, Game}|Games], Colours, Result) -> 
+    get_powers(Games, Colours, [set_power(min_set(Game, Colours, [])) | Result]).
 
 %Common
 
