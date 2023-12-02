@@ -9,7 +9,7 @@ timed(F) ->
     End = erlang:system_time(microsecond),
     {{result, Result}, {microsecs, End-Start}}.
 
-%Compile all files
+%Compile all modules
 
 find_erl_files() ->
     {ok, Files} = file:list_dir("."),
