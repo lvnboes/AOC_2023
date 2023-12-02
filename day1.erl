@@ -20,7 +20,7 @@ find_nums([H|T], Map, AllNums) ->
 
 get_calibration(Line, Map) -> 
     [H|T] = find_nums(Line, Map, []),
-    list_to_integer([last([H|T]),H]).
+    last([H|T])*10+H.
 
 sum_calibration([], _PatternMap) -> 0;
 sum_calibration([H|T], PatternMap) -> get_calibration(H, PatternMap) + sum_calibration(T, PatternMap).
@@ -28,11 +28,11 @@ sum_calibration([H|T], PatternMap) -> get_calibration(H, PatternMap) + sum_calib
 solve() -> 
     Input = process_input("./data/d1.aoc"),
     Map1 = #{
-        "0" => $0, "1" => $1, "2" => $2, "3" => $3, "4" => $4 , "5" => $5 , 
-        "6" => $6 , "7" => $7, "8" => $8, "9" => $9
+        "0" => 0, "1" => 1, "2" => 2, "3" => 3, "4" => 4 , 
+        "5" => 5 , "6" => 6 , "7" => 7, "8" => 8, "9" => 9
     },
     Map2 = Map1#{
-        "one" => $1, "two" => $2, "three" => $3, "four" => $4, "five" => $5, 
-        "six" => $6, "seven" => $7, "eight" => $8, "nine" => $9
+        "one" => 1, "two" => 2, "three" => 3, "four" => 4, "five" => 5, 
+        "six" => 6, "seven" => 7, "eight" => 8, "nine" => 9
     },
     timed(fun() -> {{part1, sum_calibration(Input, Map1)}, {part2, sum_calibration(Input, Map2)}} end).
