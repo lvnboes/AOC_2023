@@ -1,9 +1,13 @@
 -module(day1).
 -export([solve/0, solve_timed/0]).
 
+%Reading and parsing input
+
 process_input(Path) ->
     {ok, File} = file:read_file(Path),
     [binary_to_list(Line) || Line <- binary:split(File, <<"\n">>, [global])].
+
+%Common
 
 find_nums([], _Map, AllNums) -> AllNums;
 find_nums([H|T], Map, AllNums) -> 

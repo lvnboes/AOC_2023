@@ -1,11 +1,15 @@
 -module(util).
 -export([timed/1, c/0, c/1]).
 
+%Timer
+
 timed(F) ->
     Start = erlang:system_time(microsecond),
     Result = F(),
     End = erlang:system_time(microsecond),
     {{result, Result}, {microsecs, End-Start}}.
+
+%Compile all files
 
 find_erl_files() ->
     {ok, Files} = file:list_dir("."),
