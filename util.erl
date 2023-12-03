@@ -76,7 +76,6 @@ cr(DayId) -> {c(DayId), r(DayId)}.
 crt() -> {c(), rt()}.
 crt(DayId) -> {c(DayId), r(DayId)}.
 
-
 %Common
 
 find_erl_files() ->
