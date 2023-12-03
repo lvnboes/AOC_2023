@@ -29,7 +29,7 @@ consolidate_number([], MinI, MaxI, _InternalI, Acc) -> {numeric, {MinI, MaxI}, A
 consolidate_number([{_I, Value}|Buffer], MinI, MaxI, InternalI, Acc) -> 
     consolidate_number(
         Buffer, MinI, MaxI, InternalI + 1, 
-        trunc(Acc + lists:max([math:pow(10, InternalI), 1]) * Value)
+        trunc(Acc + math:pow(10, InternalI) * Value)
     ).
 
 parse_line(String, Parsers) -> parse_line(String, Parsers, 0, [], [], [], []).
