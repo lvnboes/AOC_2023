@@ -74,7 +74,7 @@ cr() -> {c(), r()}.
 cr(DayId) -> {c(DayId), r(DayId)}.
 
 crt() -> {c(), rt()}.
-crt(DayId) -> {c(DayId), r(DayId)}.
+crt(DayId) -> {c(DayId), rt(DayId)}.
 
 %Common
 
