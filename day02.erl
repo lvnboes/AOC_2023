@@ -87,7 +87,7 @@ get_colour_val(Colour, Set) ->
 sum_results(Games, Allowed, Colours, F) -> lists:sum(F(Games, Allowed, Colours, [])).
 
 solve() ->
-    Input = process_input("./data/day2.aoc"),
+    Input = process_input("./data/day02.aoc"),
     Allowed = #{<<"red">> => 12, <<"green">> => 13, <<"blue">> => 14},
     Colours = maps:keys(Allowed),
     #{

@@ -26,7 +26,7 @@ sum_calibration([], _PatternMap) -> 0;
 sum_calibration([H|T], PatternMap) -> get_calibration(H, PatternMap) + sum_calibration(T, PatternMap).
 
 solve() -> 
-    Input = process_input("./data/day1.aoc"),
+    Input = process_input("./data/day01.aoc"),
     Map1 = #{
         "0" => 0, "1" => 1, "2" => 2, "3" => 3, "4" => 4 , "5" => 5 , "6" => 6 , "7" => 7, "8" => 8, "9" => 9
     },
