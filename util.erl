@@ -28,7 +28,7 @@ c() ->
     compile_modules(Files).
 c(DayId) -> compile:file("day"++integer_to_list(DayId)++".erl").
 
-%Execute_all_days
+%Run all days
 
 is_day(FileName) -> 
     lists:sublist(string:lowercase(FileName), 1, 3) == "day" 
