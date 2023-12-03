@@ -7,7 +7,7 @@ timed(F) ->
     Start = erlang:system_time(microsecond),
     Result = F(),
     End = erlang:system_time(microsecond),
-    {{result, Result}, {microsecs, End-Start}}.
+    #{result => Result, microsecs => End-Start}.
 
 %Compile all modules
 
