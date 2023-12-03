@@ -26,17 +26,17 @@ compile_modules([FileName|FileNames], Compiled) ->
 c() -> 
     Files = find_erl_files(),
     compile_modules(Files).
-c(DayId) -> compile:file("day"++integer_to_list(DayId)++".erl").
+c(DayId) -> compile:file("day_"++int_to_id(DayId)++".erl").
 
 %Run all days
 
 is_day(FileName) -> 
-    lists:sublist(string:lowercase(FileName), 1, 3) == "day" 
+    lists:sublist(string:lowercase(FileName), 1, 4) == "day_" 
     andalso 
     lists:sublist(string:lowercase(FileName), length(FileName) - 3, length(FileName)) == ".erl".
 
 get_file_number(FileName) -> 
-    StrippedName = rm_ss(rm_ss(string:lowercase(FileName), ".erl"), "day"),
+    StrippedName = rm_ss(string:lowercase(FileName), ["day_", ".erl"]),
     try list_to_integer(StrippedName) of Val -> Val
     catch error:_ -> 99
     end.
@@ -64,7 +64,7 @@ r(Function) ->
     run(Modules, Function).
 r(DayId, timed) -> r(DayId, solve_timed);
 r(DayId, Function) when is_integer(DayId) -> 
-    Module = list_to_atom("day"++integer_to_list(DayId)),
+    Module = list_to_atom("day_"++int_to_id(DayId)),
     run([Module], Function).
 
 rt() -> r(timed).
@@ -84,4 +84,15 @@ find_erl_files() ->
 
 check_erl(File_name) -> lists:sublist(lists:reverse(File_name), 4) == "lre.".
 
-rm_ss(String, Remove) -> lists:flatten(string:replace(String, Remove, "")).
+
+rm_ss(String, []) -> String;
+rm_ss(String, Remove) ->
+    RemoveIsString = io_lib:char_list(Remove),
+    if 
+        RemoveIsString -> lists:flatten(string:replace(String, Remove, ""));
+        true ->
+            [H|T] = Remove,
+            rm_ss(lists:flatten(string:replace(String, H, "")), T)
+    end.
+
+int_to_id(Int) -> lists:flatten(string:pad(integer_to_list(Int), 2, leading, $0)).
