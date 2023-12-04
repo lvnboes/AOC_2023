@@ -1,5 +1,5 @@
 -module(util).
--export([timed/1, c/0, c/1, r/0, r/1, r/2, rt/0, rt/1, cr/0, cr/1, crt/0, crt/1]).
+-export([timed/1, print/1, print/2, c/0, c/1, r/0, r/1, r/2, rt/0, rt/1, cr/0, cr/1, crt/0, crt/1]).
 
 %Timer
 
@@ -8,6 +8,13 @@ timed(F) ->
     Result = F(),
     End = erlang:system_time(microsecond),
     #{result => Result, microseconds => End-Start}.
+
+%Print for debugging purposes
+
+print(Input) -> print(Input, 1).
+print(Input, NewLines) ->
+    FormatPattern = lists:flatten(["~p"|["~n" || _ <- lists:seq(1,NewLines)]]),
+    io:format(FormatPattern, [Input]).
 
 %Compile all modules
 
