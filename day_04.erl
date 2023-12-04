@@ -43,9 +43,9 @@ check_winning_numbers([[H|T], MyNums], Result) ->
     check_winning_numbers([T, MyNums], [check_my_numbers(MyNums, H, []) | Result]).
 
 check_cards([], _Iteration, PointsCount, CardsCount) -> 
-    {
-        lists:sum(PointsCount),
-        lists:sum(CardsCount)
+    #{
+        part1 => lists:sum(PointsCount),
+        part2 => lists:sum(CardsCount)
     };
 check_cards([H|T], Iteration, PointsCount, CardsCount) -> 
     Winning = check_winning_numbers(maps:get(contents, H), []),
