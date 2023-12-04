@@ -1,6 +1,6 @@
 -module(day_04).
 -import(binary, [split/2, split/3]).
--import(maps, [get/2]).
+-import(lists, [nth/2, sublist/3, flatten/1, sum/1]).
 -export([solve/0, solve_timed/0]).
 
 %Reading and parsing input
@@ -24,10 +24,10 @@ winning_ns_to_points(Numbers) -> trunc(math:pow(2, length(Numbers)-1)).
 
 duplicate_cards(CurrentCardWinningNs, Iteration, CountList) -> 
     CurrentCardScore = length(CurrentCardWinningNs),
-    CurrentCardCount = lists:nth(Iteration, CountList),
-    StartSection = lists:sublist(CountList, 1, Iteration),
-    DuplicatedSection = [CardCount + CurrentCardCount || CardCount <- lists:sublist(CountList, Iteration+1, CurrentCardScore)],
-    EndSection = lists:sublist(CountList, Iteration + 1 + CurrentCardScore, 99999),
+    CurrentCardCount = nth(Iteration, CountList),
+    StartSection = sublist(CountList, 1, Iteration),
+    DuplicatedSection = [CardCount + CurrentCardCount || CardCount <- sublist(CountList, Iteration+1, CurrentCardScore)],
+    EndSection = sublist(CountList, Iteration + 1 + CurrentCardScore, 99999),
     StartSection ++ DuplicatedSection ++ EndSection.
 
 %Common
@@ -38,14 +38,14 @@ check_my_numbers([H|T], Winning, Result) when H == Winning ->
 check_my_numbers([_H|T], Winning, Result) -> 
     check_my_numbers(T, Winning, Result).
 
-check_winning_numbers([[], _MyNums], Result) -> lists:flatten(Result);
+check_winning_numbers([[], _MyNums], Result) -> flatten(Result);
 check_winning_numbers([[H|T], MyNums], Result) -> 
     check_winning_numbers([T, MyNums], [check_my_numbers(MyNums, H, []) | Result]).
 
 check_cards([], _Iteration, PointsCount, CardsCount) -> 
     #{
-        part1 => lists:sum(PointsCount),
-        part2 => lists:sum(CardsCount)
+        part1 => sum(PointsCount),
+        part2 => sum(CardsCount)
     };
 check_cards([H|T], Iteration, PointsCount, CardsCount) -> 
     Winning = check_winning_numbers(maps:get(contents, H), []),
