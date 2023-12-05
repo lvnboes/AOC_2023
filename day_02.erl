@@ -5,18 +5,11 @@
 
 process_input(Path) ->
     {ok, File} = file:read_file(Path),
-    Lines = [
-        [Test || Test <- binary:split(Line, <<":">>)] 
-        || Line <- binary:split(File, <<"\n">>, [global])
-    ],
+    Lines = [[Test || Test <- binary:split(Line, <<":">>)] || Line <- binary:split(File, <<"\n">>, [global])],
     Games = [
         {
-            binary_to_integer(
-                lists:nth(2, binary:split(Id, <<" ">>))
-            ), 
-            parse_game(
-                binary:split(Game, <<";">>, [global]), []
-            )
+            binary_to_integer(lists:nth(2, binary:split(Id, <<" ">>))), 
+            parse_game(binary:split(Game, <<";">>, [global]), [])
         } || [Id, Game] <- Lines
     ],
     Games.
