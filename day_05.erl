@@ -51,7 +51,6 @@ find_dest_ranges({Start, End}, [[Dest, Source, Range] | Conversions], DestRanges
 find_dest_ranges(Range, [_Conversion | Conversions], DestRanges) -> 
     find_dest_ranges(Range, Conversions, DestRanges).
 
-
 find_loc_range(Range, []) -> Range;
 find_loc_range({Start, End}, [ConvTable | ConversionTables]) ->
     DestRanges = find_dest_ranges({Start, End}, ConvTable, []),
@@ -60,7 +59,6 @@ find_loc_range({Start, End}, [ConvTable | ConversionTables]) ->
 find_loc_ranges([], _Tables, LocRanges) -> LocRanges;
 find_loc_ranges([Range | Ranges], Tables, LocRanges) -> 
     find_loc_ranges(Ranges, Tables, lists:flatten([find_loc_range(Range, Tables) | LocRanges])).
-
 
 to_seed_ranges(Seeds) -> to_seed_ranges(Seeds, []).
 to_seed_ranges([], Ranges) -> Ranges;
