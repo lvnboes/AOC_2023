@@ -61,7 +61,8 @@ find_loc_ranges([Range | Ranges], Tables, LocRanges) ->
 
 to_seed_ranges(Seeds) -> to_seed_ranges(Seeds, []).
 to_seed_ranges([], Ranges) -> Ranges;
-to_seed_ranges([Length, Start | SeedRanges], Ranges) -> to_seed_ranges(SeedRanges, [{Start, Start + Length -1} | Ranges]).
+to_seed_ranges([Length, Start | SeedRanges], Ranges) -> 
+    to_seed_ranges(SeedRanges, [{Start, Start + Length -1} | Ranges]).
 
 %Common
 
