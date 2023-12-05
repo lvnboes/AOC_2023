@@ -57,7 +57,8 @@ find_loc_range({Start, End}, [ConvTable | ConversionTables]) ->
 
 find_loc_ranges([], _Tables, LocRanges) -> LocRanges;
 find_loc_ranges([Range | Ranges], Tables, LocRanges) -> 
-    find_loc_ranges(Ranges, Tables, lists:flatten([find_loc_range(Range, Tables) | LocRanges])).
+    LocRange = find_loc_range(Range, Tables),
+    find_loc_ranges(Ranges, Tables, lists:flatten([LocRange | LocRanges])).
 
 to_seed_ranges(Seeds) -> to_seed_ranges(Seeds, []).
 to_seed_ranges([], Ranges) -> Ranges;
