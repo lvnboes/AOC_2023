@@ -1,22 +1,21 @@
 -module(day_05).
--import(binary, [split/2, split/3]).
 -export([solve/0, solve_timed/0]).
 
 %Read and parse input
 
 process_input(Path) ->
     {ok, File} = file:read_file(Path),
-    [Seeds, ConversionMaps] = split(File, <<"\n\n">>),
+    [Seeds, ConversionMaps] = binary:split(File, <<"\n\n">>),
     {
-        [binary_to_integer(Seed) || Seed <- lists:droplast(lists:reverse(split(Seeds, <<" ">>, [global])))],
-        [parse_conv_map(ConvMap) || ConvMap <- split(ConversionMaps, <<"\n\n">>, [global])]
+        [binary_to_integer(Seed) || Seed <- lists:droplast(lists:reverse(binary:split(Seeds, <<" ">>, [global])))],
+        [parse_conv_map(ConvMap) || ConvMap <- binary:split(ConversionMaps, <<"\n\n">>, [global])]
     }.
 
 parse_conv_map(ConvMap) -> 
-    [_Conv, Map] = split(ConvMap, <<":\n">>),
+    [_Conv, Map] = binary:split(ConvMap, <<":\n">>),
     lists:sort(
         fun conv_map_sorter/2, 
-        [[binary_to_integer(Val) || Val <- split(Line, <<" ">>, [global])] || Line <- split(Map, <<"\n">>, [global])]
+        [[binary_to_integer(Val) || Val <- binary:split(Line, <<" ">>, [global])] || Line <- binary:split(Map, <<"\n">>, [global])]
     ).
 
 conv_map_sorter([_Dest1, Source1, _Range1], [_Dest2, Source2, _Range2]) -> Source1 =< Source2.
