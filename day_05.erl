@@ -1,7 +1,7 @@
 -module(day_05).
 -export([solve/0, solve_timed/0]).
 
-%Read and parse input
+%Reading and parsing input
 
 process_input(Path) ->
     {ok, File} = file:read_file(Path),
@@ -62,6 +62,8 @@ find_loc_ranges([Range | Ranges], Tables, LocRanges) ->
 to_seed_ranges(Seeds) -> to_seed_ranges(Seeds, []).
 to_seed_ranges([], Ranges) -> Ranges;
 to_seed_ranges([Length, Start | SeedRanges], Ranges) -> to_seed_ranges(SeedRanges, [{Start, Start + Length -1} | Ranges]).
+
+%Common
 
 solve() -> 
     {Seeds, Tables} = process_input("./data/day_05.aoc"),
