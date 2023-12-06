@@ -1,5 +1,5 @@
 -module(util).
--export([timed/1, print/1, print/2, c/0, c/1, r/0, r/1, r/2, rt/0, rt/1, cr/0, cr/1, crt/0, crt/1]).
+-export([timed/1, print/1, print/2, c/0, c/1, r/0, r/1, r/2, rt/0, rt/1, cr/0, cr/1, crt/0, crt/1, bm/0, bm/1, bmd/1, bmd/2]).
 
 %Timer
 
@@ -82,6 +82,45 @@ cr(DayId) -> {c(DayId), r(DayId)}.
 
 crt() -> {c(), rt()}.
 crt(DayId) -> {c(DayId), rt(DayId)}.
+
+%Benchmark
+
+bm() -> bm(1000).
+bm(X) -> 
+    Files = lists:sort(fun day_precedes/2, lists:filter(fun is_day/1, find_erl_files())),
+    Modules = [list_to_atom(lists:flatten(rm_ss(FileName, ".erl"))) || FileName <- Files],
+    benchmark_all(Modules, X).
+
+bmd(D) -> bmd(D, 1000).
+bmd(D, X) ->
+    Module = list_to_atom("day_" ++ int_to_id(D)),
+    benchmark(Module, X).
+
+benchmark_all(Modules, X) -> benchmark_all(Modules, X, []).
+benchmark_all([], _X, Results) -> maps:from_list(Results);
+benchmark_all([Module|Modules], X, Results) -> 
+    Exports = maps:from_list(Module:module_info(exports)),
+    Exists = maps:is_key(solve, Exports) and (maps:get(solve, Exports) == 0),
+    Result = if
+        Exists -> {Module, benchmark(Module, X)};
+        true -> {Module, #{function => solve, result => not_found}}
+    end,
+    benchmark_all(Modules, X, [Result|Results]).
+
+benchmark(M, X) ->
+    ResultXTimes = timed(fun() -> run_x(M, X) end),
+    AvgMicroSecs = round(maps:get(microseconds, ResultXTimes) / X),
+    Result = maps:get(result, ResultXTimes),
+    #{  
+        runs => X,
+        avg_microsecs => AvgMicroSecs,
+        result => Result
+    }.
+
+run_x(M, X) when X == 1 -> M:solve();
+run_x(M, X) -> 
+    M:solve(),
+    run_x(M, X-1).
 
 %Common
 
