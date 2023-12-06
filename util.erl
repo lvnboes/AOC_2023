@@ -1,7 +1,7 @@
 -module(util).
 -export([
     timed/1, print/1, print/2, 
-    c/0, r/0, r/1, rt/0, rt/1, cr/0, cr/1, crt/0, crt/1, 
+    c/0, c/1, c/2, r/0, r/1, rt/0, rt/1, cr/0, cr/1, crt/0, crt/1, 
     bm/0, bm/1, bmd/1, bmd/2
 ]).
 
@@ -23,21 +23,26 @@ print(Input, NewLines) ->
 %Compile all modules
 
 compile_modules(Files) -> compile_modules(Files, []).
+compile_modules(Files, debug_info) -> compile_modules(Files, [], debug_info);
 compile_modules([], Compiled) -> {ok,lists:sort(Compiled)};
 compile_modules([FileName|FileNames], Compiled) -> 
-    if
-        FileName == "util.erl" -> 
-            compile_modules(FileNames, Compiled);
-        true -> 
-            compile:file(FileName),
-            CurrentCompiled = [list_to_atom(lists:sublist(FileName, length(FileName) - 4))|Compiled],
-            compile_modules(FileNames, CurrentCompiled)
-    end.
+        compile:file(FileName),
+        CurrentCompiled = [list_to_atom(lists:sublist(FileName, length(FileName) - 4))|Compiled],
+        compile_modules(FileNames, CurrentCompiled).
+compile_modules([], Compiled, debug_info) -> {ok,lists:sort(Compiled), debug_info};
+compile_modules([FileName|FileNames], Compiled, debug_info) -> 
+        compile:file(FileName, debug_info),
+        CurrentCompiled = [list_to_atom(lists:sublist(FileName, length(FileName) - 4))|Compiled],
+        compile_modules(FileNames, CurrentCompiled, debug_info).
 
 c() -> 
     Files = find_erl_files(),
     compile_modules(Files).
-c(DayId) -> compile:file("day_"++int_to_id(DayId)++".erl").
+c(debug_info) ->
+    Files = find_erl_files(),
+    compile_modules(Files, debug_info);
+c(DayId) -> compile:file("day_"++int_to_id(DayId)++".erl", debug_info).
+c(DayId, debug_info) -> compile:file("day_"++int_to_id(DayId)++".erl", debug_info).
 
 %Run all days
 
