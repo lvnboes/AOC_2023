@@ -10,7 +10,15 @@ process_input(Path) ->
 %Part 1
 
 parse_part_1(Input) -> 
-    [Times, Dists] = [[binary_to_integer(N) || N <- lists:sublist([Seg || Seg <- binary:split(Line, <<" ">>, [global]), Seg =/= <<"">>], 2, 9999)] || Line <- Input],
+    [Times, Dists] = [
+        [
+            binary_to_integer(N) 
+            || N <- lists:sublist(
+                [Seg || Seg <- binary:split(Line, <<" ">>, [global]), Seg =/= <<"">>], 
+                2, 9999
+            )
+        ] || Line <- Input
+    ],
     lists:zip(Times, Dists).
 
 ways_to_win_multiplied(TimesAndDists) -> 
@@ -22,7 +30,18 @@ multiply_all([H|T]) -> H * multiply_all(T).
 %Part 2
 
 parse_part_2(Input) ->
-    list_to_tuple([binary_to_integer(binary:replace(lists:nth(2, binary:split(Line, <<" ">>)), <<" ">>, <<"">>, [global])) || Line <- Input]).
+    list_to_tuple([
+        binary_to_integer(
+            binary:replace(
+                lists:nth(
+                    2, 
+                    binary:split(Line, <<" ">>)
+                ), 
+                <<" ">>, <<"">>, [global]
+            )
+        ) 
+        || Line <- Input
+    ]).
 
 %Common
 
