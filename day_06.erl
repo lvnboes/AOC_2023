@@ -39,8 +39,7 @@ parse_part_2(Input) ->
                 ), 
                 <<" ">>, <<"">>, [global]
             )
-        ) 
-        || Line <- Input
+        ) || Line <- Input
     ]).
 
 %Common
