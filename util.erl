@@ -1,7 +1,7 @@
 -module(util).
 -export([
     timed/1, print/1, print/2, 
-    c/0, c/1, r/0, r/1, r/2, rt/0, rt/1, cr/0, cr/1, crt/0, crt/1, 
+    c/0, c/1, r/0, r/1, rt/0, rt/1, cr/0, cr/1, crt/0, crt/1, 
     bm/0, bm/1, bmd/1, bmd/2
 ]).
 
