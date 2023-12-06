@@ -56,5 +56,4 @@ solve() ->
         part2 => ways_to_win(parse_part_2(Input))
     }.
 
-
 solve_timed() -> util:timed(fun solve/0).
