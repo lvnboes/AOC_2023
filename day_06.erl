@@ -26,9 +26,9 @@ parse_for_part_2(Input) ->
 
 %Common
 
-calculate_ways_to_win({TT, D}) -> 
-    Sqrt = math:sqrt(math:pow(TT, 2) - 4*D),
-    trunc(((-TT - Sqrt) / -2) - 0.0001) - round(((-TT + Sqrt) / -2) + 0.5) + 1.
+calculate_ways_to_win({Time, Dist}) -> 
+    SqrtDisc = math:sqrt(math:pow(Time, 2) - 4*Dist),
+    trunc(((-Time - SqrtDisc) / -2) - 0.0001) - round(((-Time + SqrtDisc) / -2) + 0.5) + 1.
 
 solve() ->
     Input = process_input("./data/day_06.aoc"),
