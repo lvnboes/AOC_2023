@@ -58,12 +58,11 @@ score(Hand, Rule) ->
 
 card_counts(Hand, Rule) -> card_counts(Hand, Rule, #{}).
 card_counts([], Rule, CountMap) -> 
-    HasJokers = maps:is_key($b, CountMap),
-    if 
-        (Rule == joker andalso HasJokers) -> 
+    case (Rule == joker andalso maps:is_key($b, CountMap)) of
+        true -> 
             Jokers = maps:get($b, CountMap),
             CountMapByRule = CountMap#{$b => 0};
-        true -> 
+        false -> 
             Jokers = 0,
             CountMapByRule = CountMap
     end,
@@ -71,8 +70,7 @@ card_counts([], Rule, CountMap) ->
         fun(A, B) -> A > B end,
         [Count || {_Card, Count} <- maps:to_list(CountMapByRule)]
     ),
-    Result = [H+Jokers | T],
-    Result;
+    [H+Jokers | T];
 card_counts([H | T], Rule, CountMap) -> 
     case maps:is_key(H, CountMap) of
         true -> card_counts(T, Rule, CountMap#{H => maps:get(H, CountMap)+1});
