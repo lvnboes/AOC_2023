@@ -24,8 +24,10 @@ parse_line([Hand, Stake]) -> {binary_to_list(Hand), binary_to_integer(Stake)}.
 
 %Common
 
-count_winnings(Hands) -> count_winnings(Hands, 0, 1).
-count_winnings([], Winnings, _Rank) -> Winnings;
+count_winnings(Hands) -> 
+    count_winnings(Hands, 0, 1).
+count_winnings([], Winnings, _Rank) -> 
+    Winnings;
 count_winnings([{_Hand, Stake, _Score, _Rule}|Hands], Winnings, Rank) -> 
     count_winnings(Hands, Winnings + Rank * Stake, Rank + 1).
 
@@ -56,7 +58,8 @@ score(Hand, Rule) ->
         [1 | _T] -> 1
     end.
 
-card_counts(Hand, Rule) -> card_counts(Hand, Rule, #{}).
+card_counts(Hand, Rule) -> 
+    card_counts(Hand, Rule, #{}).
 card_counts([], Rule, CountMap) -> 
     case (Rule == joker andalso maps:is_key($b, CountMap)) of
         true -> 
