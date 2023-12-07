@@ -79,14 +79,18 @@ card_counts([H | T], Rule, CountMap) ->
 
 solve() -> 
     Input = process_input("./data/day_07.aoc"),
-    Part1 = count_winnings(lists:sort(
-        fun hand_sorter/2,
-        score_by_rule(Input, no_joker)
-    )),
-    Part2 = count_winnings(lists:sort(
-        fun hand_sorter/2,
-        score_by_rule(Input, joker)
-    )),
+    Part1 = count_winnings(
+        lists:sort(
+            fun hand_sorter/2,
+            score_by_rule(Input, no_joker)
+        )
+    ),
+    Part2 = count_winnings(
+        lists:sort(
+            fun hand_sorter/2,
+            score_by_rule(Input, joker)
+        )
+    ),
     #{part1 => Part1, part2 => Part2}.
 
 solve_timed() -> util:timed(fun solve/0).
