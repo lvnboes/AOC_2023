@@ -20,7 +20,8 @@ process_input(Path) ->
     ),
     [parse_line(binary:split(Line, <<" ">>)) || Line <- Lines].
 
-parse_line([Hand, Stake]) -> {binary_to_list(Hand), binary_to_integer(Stake)}.
+parse_line([Hand, Stake]) -> 
+    {binary_to_list(Hand), binary_to_integer(Stake)}.
 
 %Common
 
