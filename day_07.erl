@@ -28,7 +28,7 @@ count_winnings(Hands) ->
     count_winnings(Hands, 0, 1).
 count_winnings([], Winnings, _Rank) -> 
     Winnings;
-count_winnings([{_Hand, Stake, _Score, _Rule}|Hands], Winnings, Rank) -> 
+count_winnings([{_Hand, Stake, _Score, _Rule} | Hands], Winnings, Rank) -> 
     count_winnings(Hands, Winnings + Rank * Stake, Rank + 1).
 
 hand_sorter({Hand1, _Stake1, Score1, Rule}, {Hand2, _Stake2, Score2, Rule}) ->
