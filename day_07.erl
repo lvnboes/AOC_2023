@@ -70,11 +70,14 @@ card_counts([], Rule, CountMap) ->
         fun(A, B) -> A > B end,
         [Count || {_Card, Count} <- maps:to_list(CountMapByRule)]
     ),
-    [H+Jokers | T];
-card_counts([H | T], Rule, CountMap) -> 
-    case maps:is_key(H, CountMap) of
-        true -> card_counts(T, Rule, CountMap#{H => maps:get(H, CountMap)+1});
-        false -> card_counts(T, Rule, CountMap#{H => 1})
+    [H + Jokers | T];
+card_counts([Card | RestHand], Rule, CountMap) -> 
+    case maps:is_key(Card, CountMap) of
+        true -> card_counts(
+            RestHand, Rule, 
+            CountMap#{Card => maps:get(Card, CountMap)+1}
+        );
+        false -> card_counts(RestHand, Rule, CountMap#{Card => 1})
     end.
 
 solve() -> 
