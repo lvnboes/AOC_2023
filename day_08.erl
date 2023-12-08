@@ -19,7 +19,10 @@ process_imports(Path) ->
     {binary_to_list(Instructions), maps:from_list(ParsedNodes)}.
 
 parse_line([Node, LR]) -> 
-    {binary_to_list(Node), list_to_tuple([binary_to_list(PathOption) || PathOption <- binary:split(LR, <<", ">>)])}.
+    {
+        binary_to_list(Node), 
+        list_to_tuple([binary_to_list(PathOption) || PathOption <- binary:split(LR, <<", ">>)])
+    }.
 
 %Part 2
 
