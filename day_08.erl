@@ -42,7 +42,6 @@ find_finishes([Start | Starts], FinishCond, Instructions, NodesMap, Finishes) ->
 calc_lcm([A]) -> A;
 calc_lcm([A, B | T]) -> calc_lcm([lcm(A, B) | T]).
 
-gcd(A,B) when A == 0; B == 0 -> 0;
 gcd(A,B) when A == B -> A;
 gcd(A,B) when A > B -> gcd(A-B, B);
 gcd(A,B) -> gcd(A, B-A).
