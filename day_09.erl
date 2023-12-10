@@ -7,6 +7,12 @@ process_input(Path) ->
     {ok, File} = file:read_file(Path),
     [[binary_to_integer(Value) || Value <- binary:split(Line, <<" ">>, [global])] || Line <- binary:split(File, <<"\n">>, [global])].
 
+%Part 2
+
+extrapolate_past(FirstValues) -> extrapolate_past(FirstValues, 0).
+extrapolate_past([], Ex) -> Ex;
+extrapolate_past([H | T], Ex) -> extrapolate_past(T, H-Ex).
+
 %Common
 
 differences(Values) -> differences(Values, []).
@@ -28,13 +34,6 @@ summed_extrapolations([], Past, Future) -> #{part1 => Future, part2 => Past};
 summed_extrapolations([H | T], Past, Future) -> 
     {P, F} = extrapolate(H),
     summed_extrapolations(T, Past+P, Future+F).
-
-%Part 2
-
-extrapolate_past(FirstValues) -> extrapolate_past(FirstValues, 0).
-extrapolate_past([], Ex) -> Ex;
-extrapolate_past([H | T], Ex) -> extrapolate_past(T, H-Ex).
-
 
 solve() -> 
     Input = process_input("./data/day_09.aoc"),
