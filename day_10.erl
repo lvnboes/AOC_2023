@@ -20,6 +20,60 @@ start_line_index(Line) ->
         false -> not_found
     end.
 
+find_next(LastLoc, CurrentLoc, CountLocs, PastLocs, Map) ->
+    {LastX, LastY, LastSign} = LastLoc,
+    {CurrentX, CurrentY, CurrentSign} = CurrentLoc,
+    if
+        LastSign == $- andalso CurrentSign == $7 andalso CurrentX > LastX ->
+            NextSign = array:get(CurrentX, array:get(CurrentY-1, Map)),
+            find_next(CurrentLoc, {CurrentX, CurrentY-1, NextSign}, CountLocs+1, [CurrentLoc|PastLocs], Map);
+        LastSign == $- andalso CurrentSign == $F andalso CurrentX < LastX -> undefined;
+        LastSign == $- andalso CurrentSign == $L andalso CurrentX < LastX -> undefined;
+        LastSign == $- andalso CurrentSign == $J andalso CurrentX > LastX -> undefined;
+        LastSign == $- andalso CurrentSign == $- -> undefined;
+
+        LastSign == $| andalso CurrentSign == $7 andalso CurrentY < LastY -> undefined;
+        LastSign == $| andalso CurrentSign == $F andalso CurrentY < LastY -> undefined;
+        LastSign == $| andalso CurrentSign == $L andalso CurrentY > LastY -> undefined;
+        LastSign == $| andalso CurrentSign == $J andalso CurrentY > LastY -> undefined;
+        LastSign == $| andalso CurrentSign == $| -> undefined;
+
+        LastSign == $7 andalso CurrentSign == $F andalso CurrentX < LastX -> undefined;
+        LastSign == $7 andalso CurrentSign == $L -> undefined;
+        LastSign == $7 andalso CurrentSign == $J andalso CurrentY > LastY -> undefined;
+        LastSign == $7 andalso CurrentSign == $- andalso CurrentX < LastX -> undefined;
+        LastSign == $7 andalso CurrentSign == $| andalso CurrentY > LastY -> undefined;
+
+        LastSign == $F andalso CurrentSign == $7 andalso CurrentX > LastX -> undefined;
+        LastSign == $F andalso CurrentSign == $L andalso CurrentY > LastY -> undefined;
+        LastSign == $F andalso CurrentSign == $J -> undefined;
+        LastSign == $F andalso CurrentSign == $- andalso CurrentX > LastX -> undefined;
+        LastSign == $F andalso CurrentSign == $| andalso CurrentY > LastY -> undefined;
+
+        LastSign == $L andalso CurrentSign == $7 -> undefined;
+        LastSign == $L andalso CurrentSign == $F andalso CurrentY < LastY -> undefined;
+        LastSign == $L andalso CurrentSign == $J andalso CurrentX > LastX -> undefined;
+        LastSign == $L andalso CurrentSign == $- andalso CurrentX > LastX -> undefined;
+        LastSign == $L andalso CurrentSign == $| andalso CurrentY < LastY -> undefined;
+
+        LastSign == $J andalso CurrentSign == $7 andalso CurrentY < LastY -> undefined;
+        LastSign == $J andalso CurrentSign == $F -> undefined;
+        LastSign == $J andalso CurrentSign == $L andalso CurrentX < LastX -> undefined;
+        LastSign == $J andalso CurrentSign == $- andalso CurrentX < LastX -> undefined;
+        LastSign == $J andalso CurrentSign == $| andalso CurrentY < LastY -> undefined;
+
+        LastSign == $S andalso CurrentSign == $7 andalso (CurrentX > LastX orelse CurrentY < LastY) -> undefined;
+        LastSign == $S andalso CurrentSign == $F andalso (CurrentX < LastX orelse CurrentY > LastY)  -> undefined;
+        LastSign == $S andalso CurrentSign == $L andalso (CurrentX < LastX orelse CurrentY < LastY)  -> undefined;
+        LastSign == $S andalso CurrentSign == $J andalso (CurrentX > LastX orelse CurrentY > LastY)  -> undefined;
+        LastSign == $S andalso CurrentSign == $- andalso CurrentY == LastY -> undefined;
+        LastSign == $S andalso CurrentSign == $| andalso CurrentX == LastX -> undefined;
+
+        true -> no_path
+    end.
+
+
+
 solve() -> 
     {Start, _Map} = process_import("./data/day_10.aoc"),
     {Start}.
