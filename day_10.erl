@@ -25,8 +25,9 @@ find_next(LastLoc, CurrentLoc, CountLocs, PastLocs, Map) ->
     {CurrentX, CurrentY, CurrentSign} = CurrentLoc,
     if
         LastSign == $- andalso CurrentSign == $7 andalso CurrentX > LastX ->
-            NextSign = array:get(CurrentX, array:get(CurrentY-1, Map)),
-            find_next(CurrentLoc, {CurrentX, CurrentY-1, NextSign}, CountLocs+1, [CurrentLoc|PastLocs], Map);
+            NewY = CurrentY-1,
+            NextSign = array:get(CurrentX, array:get(NewY, Map)),
+            find_next(CurrentLoc, {CurrentX, NewY, NextSign}, CountLocs+1, [CurrentLoc|PastLocs], Map);
         LastSign == $- andalso CurrentSign == $F andalso CurrentX < LastX -> undefined;
         LastSign == $- andalso CurrentSign == $L andalso CurrentX < LastX -> undefined;
         LastSign == $- andalso CurrentSign == $J andalso CurrentX > LastX -> undefined;
