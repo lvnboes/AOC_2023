@@ -28,12 +28,18 @@ find_next(LastLoc, CurrentLoc, CountLocs, PastLocs, Map) ->
             LastSign == $- 
             orelse ((LastSign == $F orelse lastSign == $L) andalso LastX < CurrentX)
             orelse ((LastSign == $J orelse LastSign == $7) andalso LastX > CurrentX)
-        ) -> undefined;
+        ) -> 
+            NextX = CurrentX + (CurrentX - LastX),
+            NextLoc = {NextX, CurrentY, array:get(NextX, array:get(CurrentY, Map))},
+            find_next(CurrentLoc, NextLoc, CountLocs+1, [CurrentLoc | PastLocs], Map);
         CurrentSign == $| andalso (
             LastSign == $| 
             orelse ((LastSign == $F orelse lastSign == $7) andalso LastY < CurrentY)
             orelse ((LastSign == $J orelse LastSign == $L) andalso LastY > CurrentY)
-        ) -> undefined;
+        ) -> 
+            NextY = CurrentY + (CurrentY - LastY),
+            NextLoc = {CurrentX, NextY, array:get(CurrentX, array:get(NextY, Map))},
+            find_next(CurrentLoc, NextLoc, CountLocs+1, [CurrentLoc | PastLocs], Map);
         CurrentSign == $7 andalso (
             (
                 LastSign == $- orelse LastSign == $L orelse LastSign == $F
@@ -43,7 +49,11 @@ find_next(LastLoc, CurrentLoc, CountLocs, PastLocs, Map) ->
                 (LastSign == $| orelse LastSign == $L orelse LastSign == $J) 
                 andalso LastY > CurrentY
             )
-        ) -> undefined;
+        ) -> 
+            NextX = CurrentX + (CurrentY - LastY),
+            NextY = CurrentY + (CurrentX - LastX),
+            NextLoc = {NextX, NextY, array:get(NextX, array:get(NextY, Map))},
+            find_next(CurrentLoc, NextLoc, CountLocs+1, [CurrentLoc | PastLocs], Map);
         CurrentSign == $J andalso (
             (
                 LastSign == $- orelse LastSign == $L orelse LastSign == $F
@@ -75,6 +85,7 @@ find_next(LastLoc, CurrentLoc, CountLocs, PastLocs, Map) ->
             )
         ) -> undefined;
         LastSign == $S -> undefined;
+        CurrentSign == $S -> undefined;
         true -> no_path
     end.
 
