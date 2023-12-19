@@ -24,18 +24,57 @@ find_next(LastLoc, CurrentLoc, CountLocs, PastLocs, Map) ->
     {LastX, LastY, LastSign} = LastLoc,
     {CurrentX, CurrentY, CurrentSign} = CurrentLoc,
     if
-        CurrentSign == $7 andalso (LastSign == $- orelse LastSign == $L orelse LastSign == $F orelse LastSign == $S) -> undefined;
-        CurrentSign == $7 andalso (LastSign == $| orelse LastSign == $J orelse LastSign == $L orelse LastSign == $S) -> undefined;
-        CurrentSign == $J andalso (LastSign == $- orelse LastSign == $L orelse LastSign == $F orelse LastSign == $S) -> undefined;
-        CurrentSign == $J andalso (LastSign == $| orelse LastSign == $J orelse LastSign == $L orelse LastSign == $S) -> undefined;
-        CurrentSign == $L andalso (LastSign == $- orelse LastSign == $7 orelse LastSign == $J orelse LastSign == $S) -> undefined;
-        CurrentSign == $L andalso (LastSign == $| orelse LastSign == $7 orelse LastSign == $F orelse LastSign == $S) -> undefined;
-        CurrentSign == $F andalso (LastSign == $- orelse LastSign == $7 orelse LastSign == $J orelse LastSign == $S) -> undefined;
-        CurrentSign == $F andalso (LastSign == $| orelse LastSign == $J orelse LastSign == $L orelse LastSign == $S) -> undefined;
-        CurrentSign == $- andalso (LastSign == $- orelse ((LastSign == $F orelse LastSign == $L) andalso LastX < CurrentX) orelse ((LastSign == $J orelse LastSign == $7) andalso LastX > CurrentX) orelse LastSign == $S) -> undefined;
-        CurrentSign == $| andalso (LastSign == $| orelse ((LastSign == $F orelse LastSign == $7) andalso LastY < CurrentY) orelse ((LastSign == $L orelse LastSign == $J) andalso LastY > CurrentY) orelse LastSign == $S) -> undefined;
+        CurrentSign == $- andalso (
+            LastSign == $- 
+            orelse ((LastSign == $F orelse lastSign == $L) andalso LastX < CurrentX)
+            orelse ((LastSign == $J orelse LastSign == $7) andalso LastX > CurrentX)
+        ) -> undefined;
+        CurrentSign == $| andalso (
+            LastSign == $| 
+            orelse ((LastSign == $F orelse lastSign == $7) andalso LastY < CurrentY)
+            orelse ((LastSign == $J orelse LastSign == $L) andalso LastY > CurrentY)
+        ) -> undefined;
+        CurrentSign == $7 andalso (
+            (
+                LastSign == $- orelse LastSign == $L orelse LastSign == $F
+                andalso LastX < CurrentX
+            )
+            orelse(
+                (LastSign == $| orelse LastSign == $L orelse LastSign == $J) 
+                andalso LastY > CurrentY
+            )
+        ) -> undefined;
+        CurrentSign == $J andalso (
+            (
+                LastSign == $- orelse LastSign == $L orelse LastSign == $F
+                andalso LastX < CurrentX
+            )
+            orelse(
+                (LastSign == $| orelse LastSign == $7 orelse LastSign == $F) 
+                andalso LastY < CurrentY
+            )
+        ) -> undefined;
+        CurrentSign == $L andalso (
+            (
+                LastSign == $- orelse LastSign == $J orelse LastSign == $7
+                andalso LastX > CurrentX
+            )
+            orelse(
+                (LastSign == $| orelse LastSign == $F orelse LastSign == $7) 
+                andalso LastY < CurrentY
+            )
+        ) -> undefined;
+        CurrentSign == $F andalso (
+            (
+                LastSign == $- orelse LastSign == $J orelse LastSign == $7
+                andalso LastX > CurrentX
+            )
+            orelse(
+                (LastSign == $| orelse LastSign == $J orelse LastSign == $L) 
+                andalso LastY > CurrentY
+            )
+        ) -> undefined;
         LastSign == $S -> undefined;
-
         true -> no_path
     end.
 
