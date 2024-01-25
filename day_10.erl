@@ -90,7 +90,6 @@ find_next(LastLoc, CurrentLoc, CountLocs, PastLocs, Map) ->
     end.
 
 
-
 solve() -> 
     {Start, _Map} = process_import("./data/day_10.aoc"),
     {Start}.
